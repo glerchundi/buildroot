@@ -38,7 +38,10 @@ build_tar_with_hashes() {
 
 if [ "${cflag}" == "no" ]; then
   mkdir -p dist
-  patch -p0 < patch/*.patch
+  for patch in patch/*.patch
+  do
+    patch -p0 < ${patch}  
+  done
   build_tar_with_hashes "dist/${br}.tar.gz"
   build_tar_with_hashes "dist/${br}.tar.bz2" 
 else
