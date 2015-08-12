@@ -2,6 +2,9 @@
 set -e
 set -x
 
+# protect against empty folders
+shopt -s nullglob
+
 ver=${VERSION:-2015.05.rev1}
 br="buildroot-${ver}"
 
@@ -38,9 +41,8 @@ build_tar_with_hashes() {
 
 if [ "${cflag}" == "no" ]; then
   mkdir -p dist
-  cp -R buildroot ${br} 
-  for patch in patch/*.patch
-  do
+  cp -R buildroot ${br}
+  for patch in patch/*.patch; do
     patch -d ${br} -p1 < ${patch}  
   done
   build_tar_with_hashes "dist/${br}.tar.gz"
