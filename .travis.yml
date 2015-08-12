@@ -1,0 +1,16 @@
+sudo: false
+language: bash
+script:
+    - VERSION="${TRAVIS_TAG:1}" bash build
+deploy:
+  provider: releases
+  skip_cleanup: true
+  api_key:
+    secure: "jwQoQJQqEpOWp718aYMq76Ktg0p6ZeoxXW74fiJBdrYoRo1aOCEnuCxVCQgyBqDIzATGMhfvBopolWzDxdX2aPe4ZJANR9Hp0n565zD1XfN1dB38/ULFzKX2jE8Tw54eaExZiX762nz5WDXaED+aJsbYqDn7E6M6tois6R6c0uq9RjtUNwpr/rHvKLf4Dw+xlu/J4DaOsDU5Cf8XpUky0TCOpXxCUiZxV+pJPLC2eVyWtre71QfD2BqvF8UOBL0upXm2q6zLy08iHltJEtd3nPvw0rfw4Ypzk5fDkNrwfHZDzB12ibH9Up/dU7f3wrjyyIkRdkqdYzYfo3SVDq+k2BnXvZgj+OGzUml6XezikzXAAaLl/XqFCWx71kiEJGXQ3dbu2RNNW9mdCkzVNebS8blQobAZVmbCNZ5W3pBZj4x0zFsGhAWt8YXBuLZP69LI26Vvx2cbHfg64DXgsLDHIQHOV553Ofw6QWFgyT4erAoyDdGuGkWpu9f1Fclk3whXz4Yk5BVv6H8h7aaj3htBNFDx/mmLeNS2UQCuNgGx0FWsDChAOOg5DUxoe5d0B0d4dSWPreOxmeiql98TwkiHzwOq9+XBnJGVZ9jGaDTM67AdI88uzOg+rZlJFIokhGtaMeofk8qULUR1Kun4OOGiikXsmCtzPjU/7iCoDlpEU50="
+  file:
+    - $TRAVIS_BUILD_DIR/dist/buildroot-*
+  file_glob: true
+  on:
+    repo: glerchundi/buildroot
+    branch: master
+    tags: true

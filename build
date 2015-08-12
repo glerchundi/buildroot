@@ -1,0 +1,47 @@
+#!/usr/bin/env bash 
+set -e
+set -x
+
+ver=${VERSION:-2015.05.rev1}
+br="buildroot-${ver}"
+
+cflag=no
+while getopts ":hc" optchar; do
+    case "${optchar}" in
+        h)
+            echo "usage: $0 [-c]" >&2
+            exit 1
+            ;;
+        c)
+            cflag=yes
+            ;;
+    esac
+done
+
+build_tar_with_hashes() {
+  filepath=$1
+  filename=$(basename "$filepath")
+  fileext="${filename##*.}"
+  echo ${filepath} ${filename} ${fileext}
+  case ${fileext} in
+    "gz") tar -cvzf ${filepath} "buildroot" ;;
+    "bz2") tar -cvjf ${filepath} "buildroot" ;;
+     *) exit 2 ;;
+  esac
+  md5=($(md5sum ${filepath}))
+  echo ${md5} > ${filepath}.md5
+  sha256=($(sha256sum ${filepath}))
+  echo ${sha256} > ${filepath}.sha256
+  sha512=($(sha512sum ${filepath}))
+  echo ${sha512} > ${filepath}.sha512
+}
+
+if [ "${cflag}" == "no" ]; then
+  mkdir -p dist
+  patch -p0 < patch/*.patch
+  build_tar_with_hashes "dist/${br}.tar.gz"
+  build_tar_with_hashes "dist/${br}.tar.bz2" 
+else
+  rm -f ${brname}
+  rm -fr dist
+fi
