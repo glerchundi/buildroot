@@ -24,8 +24,8 @@ build_tar_with_hashes() {
   fileext="${filename##*.}"
   echo ${filepath} ${filename} ${fileext}
   case ${fileext} in
-    "gz") tar -cvzf ${filepath} "buildroot" ;;
-    "bz2") tar -cvjf ${filepath} "buildroot" ;;
+    "gz") tar -cvzf ${filepath} "${br}" ;;
+    "bz2") tar -cvjf ${filepath} "${br}" ;;
      *) exit 2 ;;
   esac
   md5=($(md5sum ${filepath}))
@@ -38,13 +38,14 @@ build_tar_with_hashes() {
 
 if [ "${cflag}" == "no" ]; then
   mkdir -p dist
+  cp -R buildroot ${br} 
   for patch in patch/*.patch
   do
-    patch -p0 < ${patch}  
+    patch -d ${br} -p1 < ${patch}  
   done
   build_tar_with_hashes "dist/${br}.tar.gz"
   build_tar_with_hashes "dist/${br}.tar.bz2" 
 else
-  rm -f ${brname}
+  rm -fr ${br}
   rm -fr dist
 fi
