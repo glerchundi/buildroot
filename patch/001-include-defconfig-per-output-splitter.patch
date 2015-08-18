@@ -1,0 +1,40 @@
+diff -rupN buildroot/defconfig-per-output-splitter buildroot.new/defconfig-per-output-splitter
+--- buildroot/defconfig-per-output-splitter	1970-01-01 01:00:00.000000000 +0100
++++ buildroot.new/defconfig-per-output-splitter	2015-08-18 13:30:49.000000000 +0200
+@@ -0,0 +1,36 @@
++#!/bin/bash
++set -e
++
++# test if file exists
++[ -a .defconfig ] || exit 1
++
++# supported outputs for this buildroot
++declare -A outputs
++outputs[BR2_TARGET_ROOTFS_TAR_NONE]=n
++outputs[BR2_TARGET_ROOTFS_TAR_GZIP]=y
++outputs[BR2_TARGET_ROOTFS_TAR_BZIP2]=n
++outputs[BR2_TARGET_ROOTFS_TAR_LZMA]=n
++outputs[BR2_TARGET_ROOTFS_TAR_LZO]=n
++outputs[BR2_TARGET_ROOTFS_TAR_XZ]=y
++
++# cleanup
++rm -f .defconfig.rendered.*
++> .defconfig.template
++
++# create template
++while read line || [ -n "$line" ]; do
++  set -- `echo $line | tr '=' ' '`
++  if [ ! ${outputs[$1]+abc} ]; then
++    echo $1=$2 >> .defconfig.template
++  else
++    outputs["$1"]=$2
++  fi
++done < .defconfig
++
++for i in "${!outputs[@]}"; do
++  if [ ${outputs[${i}],,} == "y" ]; then
++    defconfig=.defconfig.rendered.$i
++    cat .defconfig.template > $defconfig
++    echo "${i}=y" >> $defconfig
++  fi
++done
