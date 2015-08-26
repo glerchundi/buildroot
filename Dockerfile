@@ -28,8 +28,7 @@ RUN locale-gen en_US && \
 
 ENV BR_VERSION 2015.08-rc1.rev2
 ADD https://github.com/glerchundi/buildroot/releases/download/v${BR_VERSION}/buildroot-${BR_VERSION}.tar.gz /tmp/buildroot.tar.gz
-RUN tar xvfz /tmp/buildroot.tar.gz -C /tmp && \
-    ln -s /tmp/buildroot-${BR_VERSION} /tmp/buildroot
+RUN tar xvfz /tmp/buildroot.tar.gz -C /tmp && ln -s /tmp/buildroot-${BR_VERSION} /tmp/buildroot
 
-WORKDIR /tmp/buildroot-${BR_VERSION}
+WORKDIR /tmp/buildroot
 CMD [ "/bin/bash" ]
