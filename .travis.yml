@@ -1,7 +1,7 @@
 sudo: false
 language: bash
 script:
-    - VERSION="${TRAVIS_TAG:1}" bash build
+    - bash -e .travis.yml.script
 deploy:
   provider: releases
   skip_cleanup: true

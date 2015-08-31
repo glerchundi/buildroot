@@ -1,7 +1,7 @@
 diff -rupN buildroot/defconfig-per-output-splitter buildroot.new/defconfig-per-output-splitter
 --- buildroot/defconfig-per-output-splitter	1970-01-01 01:00:00.000000000 +0100
 +++ buildroot.new/defconfig-per-output-splitter	2015-08-18 13:30:49.000000000 +0200
-@@ -0,0 +1,37 @@
+@@ -0,0 +1,40 @@
 +#!/bin/bash
 +set -e
 +
@@ -23,6 +23,9 @@ diff -rupN buildroot/defconfig-per-output-splitter buildroot.new/defconfig-per-o
 +
 +# create template
 +while read line || [ -n "$line" ]; do
++  if [[ -z ${line} || ${line} == "#"* ]]; then
++    continue
++  fi
 +  key=$(echo $line | cut -d'=' -f1)
 +  value=$(echo $line | cut -d'=' -f2-)
 +  if [ ! ${outputs[${key}]+abc} ]; then

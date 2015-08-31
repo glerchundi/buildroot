@@ -1,11 +1,10 @@
-#!/usr/bin/env bash 
-set -e
+#!/usr/bin/env bash
 set -x
 
 # protect against empty folders
 shopt -s nullglob
 
-ver=${VERSION:-2015.05.rev1}
+ver="${TRAVIS_TAG:1}"
 br="buildroot-${ver}"
 
 cflag=no
@@ -29,6 +28,7 @@ build_tar_with_hashes() {
   case ${fileext} in
     "gz") tar -cvzf ${filepath} "${br}" ;;
     "bz2") tar -cvjf ${filepath} "${br}" ;;
+    "xz") tar -cvJf ${filepath} "${br}" ;;
      *) exit 2 ;;
   esac
   md5=($(md5sum ${filepath}))
@@ -46,7 +46,8 @@ if [ "${cflag}" == "no" ]; then
     patch -d ${br} -p1 < ${patch}  
   done
   build_tar_with_hashes "dist/${br}.tar.gz"
-  build_tar_with_hashes "dist/${br}.tar.bz2" 
+  build_tar_with_hashes "dist/${br}.tar.bz2"
+  build_tar_with_hashes "dist/${br}.tar.xz"
 else
   rm -fr ${br}
   rm -fr dist
