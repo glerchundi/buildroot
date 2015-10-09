@@ -11,6 +11,6 @@ deploy:
     - $TRAVIS_BUILD_DIR/dist/buildroot-*
   file_glob: true
   on:
-    repo: glerchundi/buildroot
+    repo: saltosystems/buildroot
     branch: master
     tags: true
