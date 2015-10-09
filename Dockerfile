@@ -26,9 +26,10 @@ ENV LC_CTYPE en_US.UTF-8
 RUN locale-gen en_US && \
     update-locale LANG=$LANG LC_CTYPE=$LC_CTYPE
 
-ENV BR_VERSION 2015.08-rc2.rev1
-ADD https://github.com/glerchundi/buildroot/releases/download/v${BR_VERSION}/buildroot-${BR_VERSION}.tar.gz /tmp/buildroot.tar.gz
-RUN tar xvfz /tmp/buildroot.tar.gz -C /tmp && ln -s /tmp/buildroot-${BR_VERSION} /tmp/buildroot
-
+# Copy everything inside the container
+COPY . /tmp/buildroot
 WORKDIR /tmp/buildroot
-CMD [ "/bin/bash" ]
+
+# Basic CMD command
+ENV TRAVIS_TAG v2015.08.1-rev1
+CMD [ "/bin/bash", "-e", ".travis.yml.script" ]

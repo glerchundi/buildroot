@@ -4,8 +4,13 @@ set -x
 # protect against empty folders
 shopt -s nullglob
 
-ver="${TRAVIS_TAG:1}"
-br="buildroot-${ver}"
+# exit if TRAVIS_TAG is empty, no need to release anything
+if [ -z "${TRAVIS_TAG}" ]; then
+  exit 0
+fi
+
+VERSION="${TRAVIS_TAG:1}"
+BR="buildroot-${VERSION}"
 
 cflag=no
 while getopts ":hc" optchar; do
@@ -26,9 +31,9 @@ build_tar_with_hashes() {
   fileext="${filename##*.}"
   echo ${filepath} ${filename} ${fileext}
   case ${fileext} in
-    "gz") tar -cvzf ${filepath} "${br}" ;;
-    "bz2") tar -cvjf ${filepath} "${br}" ;;
-    "xz") tar -cvJf ${filepath} "${br}" ;;
+    "gz") tar -cvzf ${filepath} "${BR}" ;;
+    "bz2") tar -cvjf ${filepath} "${BR}" ;;
+    "xz") tar -cvJf ${filepath} "${BR}" ;;
      *) exit 2 ;;
   esac
   md5=($(md5sum ${filepath}))
@@ -41,14 +46,14 @@ build_tar_with_hashes() {
 
 if [ "${cflag}" == "no" ]; then
   mkdir -p dist
-  cp -R buildroot ${br}
+  cp -R buildroot ${BR}
   for patch in patch/*.patch; do
-    patch -d ${br} -p1 < ${patch}  
+    patch -d ${BR} -p1 < ${patch}  
   done
-  build_tar_with_hashes "dist/${br}.tar.gz"
-  build_tar_with_hashes "dist/${br}.tar.bz2"
-  build_tar_with_hashes "dist/${br}.tar.xz"
+  build_tar_with_hashes "dist/${BR}.tar.gz"
+  build_tar_with_hashes "dist/${BR}.tar.bz2"
+  build_tar_with_hashes "dist/${BR}.tar.xz"
 else
-  rm -fr ${br}
+  rm -fr ${BR}
   rm -fr dist
 fi
