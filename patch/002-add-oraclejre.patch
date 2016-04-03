@@ -1,7 +1,7 @@
 diff -ENwbur --exclude output buildroot.orig/package/Config.in buildroot/package/Config.in
 --- buildroot.orig/package/Config.in	2015-08-26 12:39:39.000000000 +0200
 +++ buildroot/package/Config.in	2015-08-27 12:42:27.000000000 +0200
-@@ -520,6 +520,7 @@
+@@ -548,6 +548,7 @@
  endmenu
  endif
  	source "package/nodejs/Config.in"
@@ -51,6 +51,6 @@ diff -ENwbur --exclude output buildroot.orig/package/oraclejre-bin/oraclejre-bin
 --- buildroot.orig/package/oraclejre-bin/oraclejre-bin.hash	1970-01-01 01:00:00.000000000 +0100
 +++ buildroot/package/oraclejre-bin/oraclejre-bin.hash	2015-08-27 12:46:19.000000000 +0200
 @@ -0,0 +1,3 @@
-+# From https://www.oracle.com/webfolder/s/digest/8u60checksum.html
-+md5	60b85f47a0456a01c970b2298adb925a oraclejre-bin.tar.gz
-+sha256	9c8663a5a67429d423ed1da554a7f93d1c7e50f6bb4bc5e0bbde1f512cf36d95 oraclejre-bin.tar.gz
++# From https://www.oracle.com/webfolder/s/digest/8u77checksum.html
++md5	ee501bef73ba7fac255f0593e595d8eb oraclejre-bin.tar.gz
++sha256	a47dc0962a57b27a0cc00b9f11a53dc3add40c98633ba49a2419b845e4dedf43 oraclejre-bin.tar.gz
